@@ -1,0 +1,145 @@
+<html>
+  <head>
+    <meta content='Mu-An Chiou - @muanchiou || @muan' property='og:title' />
+    <title>Mu-An Chiou - @muanchiou || @muan</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link href='/images/fav.png' rel='shortcut icon'>
+<link href='/assets/syntax.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global.css' rel='stylesheet' type='text/css' />
+<link href='/assets/style.css' rel='stylesheet' type='text/css' />
+<link href='/assets/responsive.css' rel='stylesheet' type='text/css' />
+<!-- - -->
+<script src='/assets/jquery.js' type='text/javascript'></script>
+<script src='/assets/pd.js' type='text/javascript'></script>
+<script src='/assets/stuff.js' type='text/javascript'></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- - -->
+<meta content='width=device-width, initial-scale=1.0, user-scalable=no' name='viewport'>
+<meta content='text/html; charset=utf-8' http-equiv='content-type' />
+<meta content="http://muan.co/images/og.png" property="og:image" />
+
+  <meta content='http://muan.co/2013/02/13/pivotal-tweaker/' property='og:url' />
+  <meta content="I made a Chrome plugin called [Pivotal Tweaker](https://chrome.google.com/webstore/detail/pivotal-tweaker/aodalckpkgi..." property='og:description' />
+  <meta content="article" property="og:type" />
+
+<!-- - -->
+<script type='text/javascript'>
+  //<![CDATA[
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21332781-7']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  //]]>
+</script>
+  </head>
+  <body>
+    <div class="wrapper">
+
+      <header class="site-header">
+  <a href="/" class="site-title">
+    <div class="block"></div>
+    <span class="firstname">Mu-An</span><span class="lastname">Chiou</strong>
+  </a>
+  <nav>
+    
+      <a id="ind-about" href="/about">About</a>
+    
+  </nav>
+</header>
+<a id="fork-me" class="fork-me" href="https://github.com/muan/muan.github.com"><img src="/images/fmog.png" alt="Fork me on GitHub"></a>
+
+        <section class="content">
+          <article>
+            <div class="mark"></div>
+            <header>
+              <h2 class="post-title">Pivotal Tweaker</h2>
+              
+                <small class="datetime muted">13 Feb 2013</small>
+              
+            </header>
+            <p>I made a Chrome plugin called <a href="https://chrome.google.com/webstore/detail/pivotal-tweaker/aodalckpkgijlndlnlhblojedfboaglg">Pivotal Tweaker</a>, it makes your Pivotal Tracker better. You can download the plugin by clicking on this huge button:</p>
+
+<p><a href="https://chrome.google.com/webstore/detail/pivotal-tweaker/aodalckpkgijlndlnlhblojedfboaglg" target="_blank" class="big-button green" id="tldr-tweaker-dl">Download Pivotal Tweaker &hearts;</a></p>
+
+<hr />
+
+<p>Couple months ago I started working in <a href="http://copyin.com">Copyin</a>, where I first started using <a href="http://www.pivotaltracker.com">Pivotal Tracker</a>. <br/>
+I still remember the first day, while trying out the product, there came a bug(duh). As an exercise, I was asked to put in a story in Pivotal right away. At this point I know nothing about Pivotal.</p>
+
+<p>I dived right in. &ldquo;Click on the big blue button,&rdquo; &ldquo;change it from feature to a bug,&rdquo; &ldquo;now assign it to Rob,&rdquo; &ldquo;here&rsquo;s icebox, backlog and current,&rdquo; &ldquo;you can estimate work time, mark stories from start to finish to delivered, and someone can come in to accept it&rdquo;&hellip; I had close to zero idea as how this thing works, there seems to be a million stories all in different colours, where is the story I just added in? Where does it say it was assigned to Rob? What do those columns mean?</p>
+
+<p>All in all the experience was pretty disorientated, my first impression on Pivotal Tracker was bad.</p>
+
+<p>After a few weeks in, Pivotal started to grow on me, it started to make sense, the colours were still confusing, but the rest of the features make sense. <br>
+<strong>And how wonderful is it to be able to <a href="http://pivotallabs.com/github-service-hook-for-pivotal-tracker/">close a pivotal story using a git commit message</a>?</strong></p>
+
+<hr />
+
+<p>However, there&rsquo;s still a lot of noise, there are little things that annoys me daily in Pivotal Tracker. What frustrated me the most was: I cannot filter my story down within columns. <br />
+It is very clever of Pivotal to let you hide columns, allowing you focus on the current stories, but it&rsquo;s like a feature half done. I care about <strong><span class="colour-1">my</span> <span class="colour-2">current</span></strong> stories, not everyone else&rsquo;s, nor the ones sitting in Icebox. And initials in plain text brakets are not clear enough, there&rsquo;s not much to add, they&rsquo;re just texts like everything around it, except that I care about them more.</p>
+
+<p>Since I still need to use Pivotal Tracker, I started trying to hack the features I wanted.
+One day <a href="http://www.peternixey.com">Peter</a> and I was having a meeting, we put up a Pivotal screen and tried to discuss my current focus, he said:</p>
+
+<blockquote><p>Oh I wish there&rsquo;s some way I could filter them down to your stories..</p></blockquote>
+
+<p>&lt;( ‵▽′)-σ  <br />
+I took my laptop and show him my Pivotal Tracker, and the immediate response was:</p>
+
+<blockquote><p>Oh please can I have that as well? PLEASE!</p></blockquote>
+
+<p>So I wrote <a href="/2012/11/27/pivotal-stories/">this post</a>, where I shared how you easily toggle your stories with merely a bookmark, and how I re-styled parts of Pivotal so the information I care about jumps out.</p>
+
+<p>Then our whole team found out, and they all want it! So I made it into a Chrome extension.</p>
+
+<hr />
+
+<p>To download the plugin, click on yet another huge button:</p>
+
+<p><a href="https://chrome.google.com/webstore/detail/pivotal-tweaker/aodalckpkgijlndlnlhblojedfboaglg" target="_blank" class="big-button green" id="tweaker-dl">Download Pivotal Tweaker &hearts;</a></p>
+
+<hr />
+
+<p>After you tried it, it&rsquo;d be super nice if you could give me a <a href="https://chrome.google.com/webstore/detail/pivotal-tweaker/aodalckpkgijlndlnlhblojedfboaglg/reviews">review</a> on Chrome Store, or better yet, share it or <a href="http://twitter.com/muanchiou">tweet to me</a> :)</p>
+
+            <footer class="signoff">
+  <p>
+    Til next time,<br/>
+    Mu-An
+    <span class="muted">at 15:14</span>
+  </p>
+</footer>
+          </article>
+          
+          <div class="pagination">
+            
+              <div class="tip">Use ← and → to navigate between posts.</div>
+              <a href="/2012/11/27/pivotal-stories/" id="js-previous-post">
+                <span class="small-title">Previous Post</span>
+                <h4>Toggle Stories in Pivotal</h4>
+                <span class="small upcase datetime muted">27 Nov 2012</span>
+              </a>
+            
+            
+              <hr />
+              <a href="/2013/02/13/less-minus-points/" id="js-next-post">
+                <span class="small-title">Next Post</span>
+                <h4>Optimising for Less Minus Points</h4>
+                <span class="small upcase datetime muted">13 Feb 2013</span>
+              </a>
+            
+          </div>
+          
+        </section>
+
+      <footer class="site-footer">
+  The blog is built with <a href="http://jekyllrb.com/" target="_blank" id="jekyll">Jekyll</a> hosting on <a href="http://github.com/muan/muan.github.com" target="_blank" id="repo">GitHub Pages</a></a>.
+</footer>
+    </div>
+  </body>
+</html>
