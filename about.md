@@ -1,21 +1,29 @@
 ---
 layout: post
-title: Just an ordinary about page
+title: About ifournight
 ---
 
-**Mu-An Chiou** <small>(**邱慕安**)</small>. 
+**ifournight** <small>(**宋辉**)</small>.
 
-I am a designer at [GitHub](https://github.com) and co-founder of [Zeczec](http://zeczec.com). 
+I am a Front-end developer located in Chengdu, China. 
 
-I am a **Taiwanese** from Taipei, have been in the UK for the past 5 years, currently based in **London**.
+##Experience
 
-I started (trying) to do what I do now when I was 11, got into **French** in university but quickly dropped out, studied **Product Design** later instead, then went back doing web after graduated. 
+###2011.7 - 2012.8
+Quit my job, bought a Macbook Pro, start learning programming and iOS development from **Zero**
 
-I like web much more, because on the internet you **see the result much quicker**, and I don't have patience. You can find some of my product design works [here](http://be.net/muan).
+###2012.8 - 2013.8
+**SOHO** for **1** year, began to write a iOS app called [Documentation](https://github.com/ifournight/Documentation)(An Apple Documentation Reader on iPad), unfortuntaly I suspended the project and the app never stepped into App Store.
 
-For my fellow internet dwellers, I'm on 
-[Twitter](https://twitter.com/muanchiou),
-[GitHub](https://github.com/muan),
-[Dribbble](http://dribbble.com/muan), and
-[Instagram](http://instagram.com/muanchiou).
-There's a [XML Feed](/feed.xml) for my posts, and [this site is opensource](https://github.com/muan/muan.github.com) on GitHub.
+###2013.8 - 2014.1
+Didn't get a job as a iOS developer as planned, instead I have become a web Front-end novice developer. Working hard at china department of [Monstar](http://monstar-lab.com/).
+
+###Future
+For the next year, my target is to become a qualified and experienced Front-end developer.
+For my entire life, everything just start and nothing is settled.
+
+##The Internet
+
+- [Github](https://github.com/ifournight/)
+- [Twitter](https://twitter.com/ifournight)
+

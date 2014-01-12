@@ -1,3 +1,4 @@
-Feel free to use the theme, please attribute though.
+ifournight.github.io
+====================
 
-[@muanchiou](http://twitter.com/muanchiou)
+My jekyll blog repo

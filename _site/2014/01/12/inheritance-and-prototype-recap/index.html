@@ -18,8 +18,8 @@
 <meta content='text/html; charset=utf-8' http-equiv='content-type' />
 <meta content="http://muan.co/images/og.png" property="og:image" />
 
-  <meta content='http://muan.co/2012/10/22/sublime-shortcuts/' property='og:url' />
-  <meta content="Here’s a little bit of keyboard shortcuts that I found useful to have for sublime text 2:{% gist muan/4de4b806c4db592..." property='og:description' />
+  <meta content='http://muan.co/2014/01/12/inheritance-and-prototype-recap/' property='og:url' />
+  <meta content="##再回顾Object> An object is a container of properties, ... A property name can be any string, include the empty string...." property='og:description' />
   <meta content="article" property="og:type" />
 
 <!-- - -->
@@ -43,7 +43,7 @@
       <header class="site-header">
   <a href="/" class="site-title">
     <div class="block"></div>
-    <span class="firstname">Mu-An</span><span class="lastname">Chiou</strong>
+    <span class="firstname">ifournight</span>
   </a>
   <nav>
     
@@ -51,54 +51,65 @@
     
   </nav>
 </header>
-<a id="fork-me" class="fork-me" href="https://github.com/muan/muan.github.com"><img src="/images/fmog.png" alt="Fork me on GitHub"></a>
 
         <section class="content">
           <article>
             <div class="mark"></div>
             <header>
-              <h2 class="post-title">Sublime Text 2 Mac Shortcuts</h2>
+              <h2 class="post-title">Inheritance and prototype recap</h2>
               
-                <small class="datetime muted">22 Oct 2012</small>
+                <small class="datetime muted">12 Jan 2014</small>
               
             </header>
-            <p>Here’s a little bit of keyboard shortcuts that I found useful to have for sublime text 2:</p>
+            <h2>再回顾Object</h2>
 
-<script src="https://gist.github.com/muan/4de4b806c4db59285beb.js?file=sublime-shortcuts.js"> </script>
+<blockquote><p>An object is a container of properties, &hellip; A property name can be any string, include the empty string. A property value can be any JavaScipt value except for <code>undefined</code>.</p></blockquote>
+
+<p>Property name当然是string, 但是我这周的代码中就出现过在property中加number的情况。理论上这应该是一个syntax error, 但实际没有报错，最后应该是JavaScript将其转化成string。</p>
+
+<p>Property值不能是<code>undefined</code>也可以这么说，当一个property还没有声明时，是不能使用它的（判断它是否存在例外）。想要获取一个未声明的property的property更是会引起js 报错。所以JavaScript在Object retrieval时经常使用两种技巧, 引自JavaScript: The Good Parts：</p>
+
+<ol>
+<li>|| 操作符用来定义默认值</li>
+</ol>
+
+
+<pre><code>var value = object["property"] || "defaultValue";
+</code></pre>
+
+<ol>
+<li>&amp;&amp; 操作符用来保护从<code>undefined</code>中取值</li>
+</ol>
+
+
+<pre><code>if (object.someProperty &amp;&amp; object.someProperty.someValue) {}
+</code></pre>
+
+<h3>delete</h3>
+
+<p>delete只会删除object的property，不会触动object的prototype chain.</p>
+
+<h2>再回顾prototype</h2>
+
+<ul>
+<li>constructor必须是一个function。</li>
+<li>只有constructor才有一个属性<code>prototype</code>指向自己的prototype, constructor的instance是没有的。在ECMA-262 fifth edition中，instace会有一个隐性指针[[Prototype]], 在现代浏览器中你可以通过<code>__proto__</code>才获取。</li>
+</ul>
 
 
             <footer class="signoff">
   <p>
     Til next time,<br/>
     Mu-An
-    <span class="muted">at 19:33</span>
+    <span class="muted">at 11:36</span>
   </p>
 </footer>
           </article>
           
-          <div class="pagination">
-            
-              <div class="tip">Use ← and → to navigate between posts.</div>
-              <a href="/2012/06/09/setting-up-rails-on-a-windows-machine/" id="js-previous-post">
-                <span class="small-title">Previous Post</span>
-                <h4>Installing Ruby on Rails on Windows (+ notes for Heroku)</h4>
-                <span class="small upcase datetime muted">09 Jun 2012</span>
-              </a>
-            
-            
-              <hr />
-              <a href="/2012/11/27/pivotal-stories/" id="js-next-post">
-                <span class="small-title">Next Post</span>
-                <h4>Toggle Stories in Pivotal</h4>
-                <span class="small upcase datetime muted">27 Nov 2012</span>
-              </a>
-            
-          </div>
-          
         </section>
 
       <footer class="site-footer">
-  The blog is built with <a href="http://jekyllrb.com/" target="_blank" id="jekyll">Jekyll</a> hosting on <a href="http://github.com/muan/muan.github.com" target="_blank" id="repo">GitHub Pages</a></a>.
+  Built with <a href="http://jekyllrb.com/" target="_blank" id="jekyll">Jekyll</a> using Block theme by <a href="muan.co">muan</a>
 </footer>
     </div>
   </body>
