@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Mu-An Chiou - @muanchiou || @muan</title>
+    <title>ifournight's blog</title>
     <description></description>
-    <link>http://muan.co</link>
-    <atom:link href="http://muan.co/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://ifournight.github.io</link>
+    <atom:link href="http://ifournight.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
-        <title>Inheritance and prototype recap</title>
-        <description>&lt;h2&gt;再回顾Object&lt;/h2&gt;
+        <title>Revisit inheritance and prototype of JS</title>
+        <description>&lt;h2&gt;Revisit Object&lt;/h2&gt;
 
 &lt;blockquote&gt;&lt;p&gt;An object is a container of properties, &amp;hellip; A property name can be any string, include the empty string. A property value can be any JavaScipt value except for &lt;code&gt;undefined&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
 
-&lt;p&gt;Property name当然是string, 但是我这周的代码中就出现过在property中加number的情况。理论上这应该是一个syntax error, 但实际没有报错，最后应该是JavaScript将其转化成string。&lt;/p&gt;
+&lt;p&gt;Of course property name should be string, but when in practive this week I just write a object which has a number property. This should be a syntax error, but the error never happen, my guess is that the JS transcriptor just implicitly tranfer the number to the corresponding string.&lt;/p&gt;
 
-&lt;p&gt;Property值不能是&lt;code&gt;undefined&lt;/code&gt;也可以这么说，当一个property还没有声明时，是不能使用它的（判断它是否存在例外）。想要获取一个未声明的property的property更是会引起js 报错。所以JavaScript在Object retrieval时经常使用两种技巧, 引自JavaScript: The Good Parts：&lt;/p&gt;
+&lt;p&gt;Get the value of &lt;code&gt;undefined&lt;/code&gt; will cause &lt;code&gt;TypeError&lt;/code&gt;, so there are serveral tricks to avoid this, leared from JavaScript: The Good Parts：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;|| 操作符用来定义默认值&lt;/li&gt;
+&lt;li&gt;Use || operator to assign default value:&lt;/li&gt;
 &lt;/ol&gt;
 
 
@@ -25,28 +25,130 @@
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&amp;amp;&amp;amp; 操作符用来保护从&lt;code&gt;undefined&lt;/code&gt;中取值&lt;/li&gt;
+&lt;li&gt;Using &amp;amp;&amp;amp; operator to protect getting value from &lt;code&gt;undefined&lt;/code&gt;:&lt;/li&gt;
 &lt;/ol&gt;
 
 
-&lt;pre&gt;&lt;code&gt;if (object.someProperty &amp;amp;&amp;amp; object.someProperty.someValue) {}
+&lt;pre&gt;&lt;code&gt;if (object.someProperty &amp;amp;&amp;amp; object.someProperty.someValue) {};
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3&gt;delete&lt;/h3&gt;
 
-&lt;p&gt;delete只会删除object的property，不会触动object的prototype chain.&lt;/p&gt;
+&lt;p&gt;delete will only remove the object&amp;rsquo;s own property, it will not touch the prototype chain.&lt;/p&gt;
 
-&lt;h2&gt;再回顾prototype&lt;/h2&gt;
+&lt;h2&gt;Revisit prototype&lt;/h2&gt;
+
+&lt;h3&gt;Some wireds.&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;constructor必须是一个function。&lt;/li&gt;
-&lt;li&gt;只有constructor才有一个属性&lt;code&gt;prototype&lt;/code&gt;指向自己的prototype, constructor的instance是没有的。在ECMA-262 fifth edition中，instace会有一个隐性指针[[Prototype]], 在现代浏览器中你可以通过&lt;code&gt;__proto__&lt;/code&gt;才获取。&lt;/li&gt;
+&lt;li&gt;constructor must be a &lt;code&gt;Function&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;In classical inheritance, only constructor has a prototype property pointing at its prototype, not the instance of the constructor.In ECMA-262 fifth edition，instance of the constructor will have a implict potiner[[Prototype]], mordern browsers implement the [[Prototype]] as &lt;code&gt;__super__&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
+
+&lt;h2&gt;Revisit inheritance&lt;/h2&gt;
+
+&lt;blockquote&gt;&lt;p&gt;What matters about an object is what it can do, not what it is descended from.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I highly agree with what DC said in &lt;em&gt;The Good Part book&lt;/em&gt;, and I try to understand 4 inheritance patterns he metioned in this book. There&amp;rsquo;s maybe much more complicated patterns, but:&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Much more complicated constructions are possible, but it is usually best to keep it simple.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3&gt;Pseudoclassical&lt;/h3&gt;
+
+&lt;p&gt;It&amp;rsquo;s important to understand what &lt;code&gt;new&lt;/code&gt; really do if it is a function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (typeof Object.beget != &#39;function&#39;) {
+    Object.create = function(p) {
+        // Create a plain constructor.
+        var F = new Function() {};
+        // Assign prototype.
+        F.prototype = p;
+        // Well, I guess we can&#39;t use new to explain new,
+        // so I am still confused about this line.
+        return new F();
+    }
+}
+
+Function.method(&#39;new&#39;, function() {
+    // Create a new object that inherits from the constructor&#39;s prototype.
+    // That&#39;s is why the instance don&#39;t have prototype property.
+    var that = Object.create(this.prototype);
+
+    // Invoke the constructor, binding -this- to 
+    // the new object.
+    var other = this.apply(that, arguments);
+
+    // If its return value isn&#39;t an object,
+    // substitue the new object.
+    return (typeof other === &#39;object&#39; &amp;amp;&amp;amp; other) || that;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There&amp;rsquo;s still one line code I can&amp;rsquo;t understand, which is DC use &lt;code&gt;new&lt;/code&gt; prefix in beget method to explain new method.
+Here is the internal process that in my understanding:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;The constructor as a function, when used with &lt;code&gt;new&lt;/code&gt; prefix, create a plain object, and assign the object&amp;rsquo;s [[prototype]] to constructor&amp;rsquo;s prototype.&lt;/li&gt;
+&lt;li&gt;The code inside constructor function execute under the context of the new object, like a process of initilization.&lt;/li&gt;
+&lt;li&gt;If the constructor function has a return value, the value is returned, instead the new object is returned.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: If using pseudoclassical, Capitalize and only capitalize the Contructor, always use &lt;code&gt;new&lt;/code&gt; prefix.&lt;/p&gt;
+
+&lt;h3&gt;Prototypal&lt;/h3&gt;
+
+&lt;p&gt;Prototypal pattern still use prototype, what it get rid of is &amp;lsquo;The entire class stuff&amp;rsquo; and the &lt;code&gt;new&lt;/code&gt; prefix. The example from &lt;em&gt;The Good Part&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var myCat = Object.create(myMammal);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There&amp;rsquo;s no class in prototypal pattern, methods and propertys of one object can be fetched by another object directly.
+So there&amp;rsquo;s no constructor, no instance, there&amp;rsquo;s only objects which inherit from its prototype.&lt;/p&gt;
+
+&lt;h3&gt;Functional&lt;/h3&gt;
+
+&lt;p&gt;Functional gives up the prototype, and use function to achieve inheritance. Four steps of &lt;strong&gt;Functional&lt;/strong&gt; inheritance:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a new object, with
+
+&lt;ul&gt;
+&lt;li&gt;Object literal&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;new&lt;/code&gt; Constructor(Pseudoclassical)&lt;/li&gt;
+&lt;li&gt;Object.create(Prototypal)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;(Optionally) defines private instances variables and methods.&lt;/li&gt;
+&lt;li&gt;Add methods into the new object, which can access the private instances variables and methods.&lt;/li&gt;
+&lt;li&gt;return the new object.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;The pseudocode template:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var constructor = function(spec, my) {
+    var that, other private instance variables;
+    my = my | {};
+
+    Add shared variables and functions to my
+
+    that = a new object;
+
+    Add privileged methods to that
+
+    return that;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Durable Object&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;If we create an object in the functional style, and if all of the methods of the object make no use of &lt;code&gt;this&lt;/code&gt; or &lt;code&gt;that&lt;/code&gt;, then the object is durable. A durable object is simply a collection of functions that act as capabilities.&lt;/p&gt;&lt;/blockquote&gt;
 </description>
-        <pubDate>Sun, 12 Jan 2014 11:36:00 +0000</pubDate>
-        <link>http://muan.co/2014/01/12/inheritance-and-prototype-recap/</link>
-        <guid isPermaLink="true">http://muan.co/2014/01/12/inheritance-and-prototype-recap/</guid>
+        <pubDate>Mon, 13 Jan 2014 11:36:00 +0000</pubDate>
+        <link>http://ifournight.github.io/2014/01/13/inheritance-and-prototype-revisit/</link>
+        <guid isPermaLink="true">http://ifournight.github.io/2014/01/13/inheritance-and-prototype-revisit/</guid>
       </item>
     
   </channel>

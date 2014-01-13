@@ -1,0 +1,218 @@
+<html>
+  <head>
+    <meta content='ifournight's blog' property='og:title' />
+    <title>ifournight's blog</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+<link href='/images/fav.png' rel='shortcut icon'>
+<link href='/assets/syntax.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global.css' rel='stylesheet' type='text/css' />
+<link href='/assets/style.css' rel='stylesheet' type='text/css' />
+<link href='/assets/responsive.css' rel='stylesheet' type='text/css' />
+<!-- - -->
+<script src='/assets/jquery.js' type='text/javascript'></script>
+<script src='/assets/pd.js' type='text/javascript'></script>
+<script src='/assets/stuff.js' type='text/javascript'></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- - -->
+<meta content='width=device-width, initial-scale=1.0, user-scalable=no' name='viewport'>
+<meta content='text/html; charset=utf-8' http-equiv='content-type' />
+<meta content="http://muan.co/images/og.png" property="og:image" />
+
+  <meta content='http://ifournight.github.io/2014/01/13/inheritance-and-prototype-revisit/' property='og:url' />
+  <meta content="##Revisit Object> An object is a container of properties, ... A property name can be any string, include the empty st..." property='og:description' />
+  <meta content="article" property="og:type" />
+
+<!-- - -->
+<script type='text/javascript'>
+  //<![CDATA[
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21332781-7']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  //]]>
+</script>
+  </head>
+  <body>
+    <div class="wrapper">
+
+      <header class="site-header">
+  <a href="/" class="site-title">
+    <div class="block"></div>
+    <span class="firstname">ifournight</span>
+  </a>
+  <nav>
+    
+      <a id="ind-about" href="/about">About</a>
+    
+  </nav>
+</header>
+
+        <section class="content">
+          <article>
+            <div class="mark"></div>
+            <header>
+              <h2 class="post-title">Revisit inheritance and prototype of JS</h2>
+              
+                <small class="datetime muted">13 Jan 2014</small>
+              
+            </header>
+            <h2>Revisit Object</h2>
+
+<blockquote><p>An object is a container of properties, &hellip; A property name can be any string, include the empty string. A property value can be any JavaScipt value except for <code>undefined</code>.</p></blockquote>
+
+<p>Of course property name should be string, but when in practive this week I just write a object which has a number property. This should be a syntax error, but the error never happen, my guess is that the JS transcriptor just implicitly tranfer the number to the corresponding string.</p>
+
+<p>Get the value of <code>undefined</code> will cause <code>TypeError</code>, so there are serveral tricks to avoid this, leared from JavaScript: The Good Parts：</p>
+
+<ol>
+<li>Use || operator to assign default value:</li>
+</ol>
+
+
+<pre><code>var value = object["property"] || "defaultValue";
+</code></pre>
+
+<ol>
+<li>Using &amp;&amp; operator to protect getting value from <code>undefined</code>:</li>
+</ol>
+
+
+<pre><code>if (object.someProperty &amp;&amp; object.someProperty.someValue) {};
+</code></pre>
+
+<h3>delete</h3>
+
+<p>delete will only remove the object&rsquo;s own property, it will not touch the prototype chain.</p>
+
+<h2>Revisit prototype</h2>
+
+<h3>Some wireds.</h3>
+
+<ul>
+<li>constructor must be a <code>Function</code>.</li>
+<li>In classical inheritance, only constructor has a prototype property pointing at its prototype, not the instance of the constructor.In ECMA-262 fifth edition，instance of the constructor will have a implict potiner[[Prototype]], mordern browsers implement the [[Prototype]] as <code>__super__</code>.</li>
+</ul>
+
+
+<h2>Revisit inheritance</h2>
+
+<blockquote><p>What matters about an object is what it can do, not what it is descended from.</p></blockquote>
+
+<p>I highly agree with what DC said in <em>The Good Part book</em>, and I try to understand 4 inheritance patterns he metioned in this book. There&rsquo;s maybe much more complicated patterns, but:</p>
+
+<blockquote><p>Much more complicated constructions are possible, but it is usually best to keep it simple.</p></blockquote>
+
+<h3>Pseudoclassical</h3>
+
+<p>It&rsquo;s important to understand what <code>new</code> really do if it is a function:</p>
+
+<pre><code>if (typeof Object.beget != 'function') {
+    Object.create = function(p) {
+        // Create a plain constructor.
+        var F = new Function() {};
+        // Assign prototype.
+        F.prototype = p;
+        // Well, I guess we can't use new to explain new,
+        // so I am still confused about this line.
+        return new F();
+    }
+}
+
+Function.method('new', function() {
+    // Create a new object that inherits from the constructor's prototype.
+    // That's is why the instance don't have prototype property.
+    var that = Object.create(this.prototype);
+
+    // Invoke the constructor, binding -this- to 
+    // the new object.
+    var other = this.apply(that, arguments);
+
+    // If its return value isn't an object,
+    // substitue the new object.
+    return (typeof other === 'object' &amp;&amp; other) || that;
+});
+</code></pre>
+
+<p>There&rsquo;s still one line code I can&rsquo;t understand, which is DC use <code>new</code> prefix in beget method to explain new method.
+Here is the internal process that in my understanding:</p>
+
+<ol>
+<li>The constructor as a function, when used with <code>new</code> prefix, create a plain object, and assign the object&rsquo;s [[prototype]] to constructor&rsquo;s prototype.</li>
+<li>The code inside constructor function execute under the context of the new object, like a process of initilization.</li>
+<li>If the constructor function has a return value, the value is returned, instead the new object is returned.</li>
+</ol>
+
+
+<p><strong>NOTE</strong>: If using pseudoclassical, Capitalize and only capitalize the Contructor, always use <code>new</code> prefix.</p>
+
+<h3>Prototypal</h3>
+
+<p>Prototypal pattern still use prototype, what it get rid of is &lsquo;The entire class stuff&rsquo; and the <code>new</code> prefix. The example from <em>The Good Part</em>:</p>
+
+<pre><code>var myCat = Object.create(myMammal);
+</code></pre>
+
+<p>There&rsquo;s no class in prototypal pattern, methods and propertys of one object can be fetched by another object directly.
+So there&rsquo;s no constructor, no instance, there&rsquo;s only objects which inherit from its prototype.</p>
+
+<h3>Functional</h3>
+
+<p>Functional gives up the prototype, and use function to achieve inheritance. Four steps of <strong>Functional</strong> inheritance:</p>
+
+<ol>
+<li>Create a new object, with
+
+<ul>
+<li>Object literal</li>
+<li><code>new</code> Constructor(Pseudoclassical)</li>
+<li>Object.create(Prototypal)</li>
+</ul>
+</li>
+<li>(Optionally) defines private instances variables and methods.</li>
+<li>Add methods into the new object, which can access the private instances variables and methods.</li>
+<li>return the new object.</li>
+</ol>
+
+
+<p>The pseudocode template:</p>
+
+<pre><code>var constructor = function(spec, my) {
+    var that, other private instance variables;
+    my = my | {};
+
+    Add shared variables and functions to my
+
+    that = a new object;
+
+    Add privileged methods to that
+
+    return that;
+}
+</code></pre>
+
+<p><strong>Durable Object</strong>:</p>
+
+<blockquote><p>If we create an object in the functional style, and if all of the methods of the object make no use of <code>this</code> or <code>that</code>, then the object is durable. A durable object is simply a collection of functions that act as capabilities.</p></blockquote>
+
+            <footer class="signoff">
+  <p>
+    Til next time,<br/>
+    ifournight
+    <span class="muted">at 11:36</span>
+  </p>
+</footer>
+          </article>
+          
+        </section>
+
+      <footer class="site-footer">
+  Built with <a href="http://jekyllrb.com/" target="_blank" id="jekyll">Jekyll</a> using Block theme by <a href="muan.co">muan</a>
+</footer>
+    </div>
+  </body>
+</html>
