@@ -69,21 +69,17 @@
 
 <p>Get the value of <code>undefined</code> will cause <code>TypeError</code>, so there are serveral tricks to avoid this, leared from JavaScript: The Good Parts：</p>
 
-<ol>
-<li>Use || operator to assign default value:</li>
-</ol>
+<p>Use || operator to assign default value:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">object</span><span class="p">[</span><span class="s2">&quot;property&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="s2">&quot;defaultValue&quot;</span><span class="p">;</span>
+</code></pre></div>
 
 
-<pre><code>var value = object["property"] || "defaultValue";
-</code></pre>
+<p>Using &amp;&amp; operator to protect getting value from <code>undefined</code>:</p>
 
-<ol>
-<li>Using &amp;&amp; operator to protect getting value from <code>undefined</code>:</li>
-</ol>
+<div class="highlight"><pre><code class="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">someProperty</span> <span class="o">&amp;&amp;</span> <span class="nx">object</span><span class="p">.</span><span class="nx">someProperty</span><span class="p">.</span><span class="nx">someValue</span><span class="p">)</span> <span class="p">{};</span>
+</code></pre></div>
 
-
-<pre><code>if (object.someProperty &amp;&amp; object.someProperty.someValue) {};
-</code></pre>
 
 <h3>delete</h3>
 
@@ -111,32 +107,33 @@
 
 <p>It&rsquo;s important to understand what <code>new</code> really do if it is a function:</p>
 
-<pre><code>if (typeof Object.beget != 'function') {
-    Object.create = function(p) {
-        // Create a plain constructor.
-        var F = new Function() {};
-        // Assign prototype.
-        F.prototype = p;
-        // Well, I guess we can't use new to explain new,
-        // so I am still confused about this line.
-        return new F();
-    }
-}
+<div class="highlight"><pre><code class="javascript"><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">beget</span> <span class="o">!=</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Create a plain constructor.</span>
+        <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">()</span> <span class="p">{};</span>
+        <span class="c1">// Assign prototype.</span>
+        <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+        <span class="c1">// Well, I guess we can&#39;t use new to explain new,</span>
+        <span class="c1">// so I am still confused about this line.</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-Function.method('new', function() {
-    // Create a new object that inherits from the constructor's prototype.
-    // That's is why the instance don't have prototype property.
-    var that = Object.create(this.prototype);
+<span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="s1">&#39;new&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Create a new object that inherits from the constructor&#39;s prototype.</span>
+    <span class="c1">// That&#39;s is why the instance don&#39;t have prototype property.</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
 
-    // Invoke the constructor, binding -this- to 
-    // the new object.
-    var other = this.apply(that, arguments);
+    <span class="c1">// Invoke the constructor, binding -this- to </span>
+    <span class="c1">// the new object.</span>
+    <span class="kd">var</span> <span class="nx">other</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 
-    // If its return value isn't an object,
-    // substitue the new object.
-    return (typeof other === 'object' &amp;&amp; other) || that;
-});
-</code></pre>
+    <span class="c1">// If its return value isn&#39;t an object,</span>
+    <span class="c1">// substitue the new object.</span>
+    <span class="k">return</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">other</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">other</span><span class="p">)</span> <span class="o">||</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+
 
 <p>There&rsquo;s still one line code I can&rsquo;t understand, which is DC use <code>new</code> prefix in beget method to explain new method.
 Here is the internal process that in my understanding:</p>
@@ -154,8 +151,9 @@ Here is the internal process that in my understanding:</p>
 
 <p>Prototypal pattern still use prototype, what it get rid of is &lsquo;The entire class stuff&rsquo; and the <code>new</code> prefix. The example from <em>The Good Part</em>:</p>
 
-<pre><code>var myCat = Object.create(myMammal);
-</code></pre>
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">myCat</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">myMammal</span><span class="p">);</span>
+</code></pre></div>
+
 
 <p>There&rsquo;s no class in prototypal pattern, methods and propertys of one object can be fetched by another object directly.
 So there&rsquo;s no constructor, no instance, there&rsquo;s only objects which inherit from its prototype.</p>
@@ -181,19 +179,20 @@ So there&rsquo;s no constructor, no instance, there&rsquo;s only objects which i
 
 <p>The pseudocode template:</p>
 
-<pre><code>var constructor = function(spec, my) {
-    var that, other private instance variables;
-    my = my | {};
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">constructor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">spec</span><span class="p">,</span> <span class="nx">my</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="c1">// other private instance variables;</span>
+    <span class="nx">my</span> <span class="o">=</span> <span class="nx">my</span> <span class="o">|</span> <span class="p">{};</span>
 
-    Add shared variables and functions to my
+    <span class="c1">// Add shared variables and functions to my</span>
 
-    that = a new object;
+    <span class="nx">that</span> <span class="o">=</span> <span class="nx">a</span> <span class="k">new</span> <span class="nx">object</span><span class="p">;</span>
 
-    Add privileged methods to that
+    <span class="c1">// Add privileged methods to that</span>
 
-    return that;
-}
-</code></pre>
+    <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
 
 <p><strong>Durable Object</strong>:</p>
 

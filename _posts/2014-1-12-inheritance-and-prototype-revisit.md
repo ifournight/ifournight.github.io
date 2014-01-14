@@ -11,17 +11,17 @@ Of course property name should be string, but when in practive this week I just 
 
 Get the value of `undefined` will cause `TypeError`, so there are serveral tricks to avoid this, leared from JavaScript: The Good Parts：
 
-1. Use || operator to assign default value:
+Use || operator to assign default value:
 
-```
+{% highlight JavaScript %}
 var value = object["property"] || "defaultValue";
-```
+{% endhighlight %}
 
-2. Using && operator to protect getting value from `undefined`:
+Using && operator to protect getting value from `undefined`:
 
-```
+{% highlight JavaScript %}
 if (object.someProperty && object.someProperty.someValue) {};
-```
+{% endhighlight %}
 
 ###delete
 
@@ -45,7 +45,7 @@ I highly agree with what DC said in *The Good Part book*, and I try to understan
 
 It's important to understand what `new` really do if it is a function:
 
-```
+{% highlight JavaScript %}
 if (typeof Object.beget != 'function') {
 	Object.create = function(p) {
 		// Create a plain constructor.
@@ -71,7 +71,8 @@ Function.method('new', function() {
 	// substitue the new object.
 	return (typeof other === 'object' && other) || that;
 });
-```
+{% endhighlight %}
+
 There's still one line code I can't understand, which is DC use `new` prefix in beget method to explain new method. 
 Here is the internal process that in my understanding:
 
@@ -84,9 +85,9 @@ Here is the internal process that in my understanding:
 ###Prototypal
 Prototypal pattern still use prototype, what it get rid of is 'The entire class stuff' and the `new` prefix. The example from *The Good Part*:
 
-```
+{% highlight JavaScript %}
 var myCat = Object.create(myMammal);
-```
+{% endhighlight %}
 
 There's no class in prototypal pattern, methods and propertys of one object can be fetched by another object directly.
 So there's no constructor, no instance, there's only objects which inherit from its prototype.
@@ -105,20 +106,20 @@ Functional gives up the prototype, and use function to achieve inheritance. Four
 
 The pseudocode template: 
 
-```
+{% highlight JavaScript %}
 var constructor = function(spec, my) {
-	var that, other private instance variables;
+	var that // other private instance variables;
 	my = my | {};
 
-	Add shared variables and functions to my
+	// Add shared variables and functions to my
 
 	that = a new object;
 
-	Add privileged methods to that
+	// Add privileged methods to that
 
 	return that;
 }
-```
+{% endhighlight %}
 
 **Durable Object**:
 > If we create an object in the functional style, and if all of the methods of the object make no use of `this` or `that`, then the object is durable. A durable object is simply a collection of functions that act as capabilities.
